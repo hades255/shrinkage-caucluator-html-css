@@ -1,7 +1,10 @@
 let calculator = "0";
 
 function max(a, b) {
-  return a > b ? a : b;
+  return Number(a) > Number(b) ? a : b;
+}
+function min(a, b) {
+  return Number(a) < Number(b) ? a : b;
 }
 
 function handleSelectChange(e) {
@@ -40,9 +43,17 @@ function handleClickClearBtn() {
   document
     .getElementsByClassName("calculator-btn-group-result")[0]
     .classList.add("d-none");
+  document.getElementsByClassName("result-rect")[0].classList.add("d-none");
+  document.getElementsByClassName("result-y-arrow")[0].classList.add("d-none");
+  document.getElementsByClassName("result-x-arrow")[0].classList.add("d-none");
+  document.getElementsByClassName("result-x-line")[0].classList.add("d-none");
+  document.getElementsByClassName("result-text-x0")[0].classList.add("d-none");
+  document.getElementsByClassName("result-text-x")[0].classList.add("d-none");
+  document.getElementsByClassName("result-text-y")[0].classList.add("d-none");
 }
 
 function handleClickCalBtn() {
+  document.getElementsByClassName("result-y-arrow")[0].classList.add("d-none");
   const content = document.getElementsByClassName(
     "calculator-type-" + calculator
   )[0];
@@ -59,6 +70,9 @@ function handleClickCalBtn() {
       y_ = inputs[3].value;
       let unit;
       unit = 200 / max(max(x, x_), max(y, y_));
+      console.log(x, y, x_, y_);
+      console.log(max(x, x_), max(y, y_), max(max(x, x_), max(y, y_)));
+      console.log(unit);
       document.getElementsByClassName("result-origin-rect")[0].style.width =
         y * unit + "px";
       document.getElementsByClassName("result-origin-rect")[0].style.height =
@@ -70,6 +84,39 @@ function handleClickCalBtn() {
 
       result = (((x_ - x) / x) * 100).toFixed(1);
       result_ = (((y_ - y) / y) * 100).toFixed(1);
+      document
+        .getElementsByClassName("result-x-arrow")[0]
+        .classList.remove("d-none");
+      document
+        .getElementsByClassName("result-x-line")[0]
+        .classList.remove("d-none");
+      if (unit * y_ >= 16)
+        document
+          .getElementsByClassName("result-y-arrow")[0]
+          .classList.remove("d-none");
+      document.getElementsByClassName("result-text-x0")[0].innerText =
+        (result > 0 ? "+" : "") + result + "%";
+      document.getElementsByClassName("result-text-y")[0].innerText =
+        (result_ > 0 ? "+" : "") + result_ + "%";
+      document
+        .getElementsByClassName("result-text-x0")[0]
+        .classList.remove("d-none");
+      document
+        .getElementsByClassName("result-text-y")[0]
+        .classList.remove("d-none");
+      if (unit * y_ < 50) {
+        document.getElementsByClassName("result-text-y")[0].style.right =
+          unit * y_ + 10 + "px";
+        document.getElementsByClassName("result-text-y")[0].style.top =
+          (unit * x_) / 2 - 15 + "px";
+      } else {
+        document.getElementsByClassName("result-text-y")[0].style.right =
+          (unit * y_) / 2 - 30 + "px";
+        document.getElementsByClassName("result-text-y")[0].style.top =
+          (unit * x_) / 2 - 30 + "px";
+      }
+      document.getElementsByClassName("result-text-x0")[0].style.top =
+        (x_ * unit) / 2 - 25 + "px";
       break;
     case "1":
       x = inputs[0].value;
@@ -79,6 +126,27 @@ function handleClickCalBtn() {
       document.getElementsByClassName("result-rect")[0].style.width =
         (200 * result) / 100 + "px";
       document.getElementsByClassName("result-rect")[0].style.height = "200px";
+      if (result >= 8)
+        document
+          .getElementsByClassName("result-y-arrow")[0]
+          .classList.remove("d-none");
+      document.getElementsByClassName("result-text-x")[0].innerText = y;
+      document.getElementsByClassName("result-text-y")[0].innerText = x;
+      document
+        .getElementsByClassName("result-text-x")[0]
+        .classList.remove("d-none");
+      document
+        .getElementsByClassName("result-text-y")[0]
+        .classList.remove("d-none");
+      if (result > 20) {
+        document.getElementsByClassName("result-text-y")[0].style.right =
+          result - 10 + "px";
+        document.getElementsByClassName("result-text-y")[0].style.top = "70px";
+      } else {
+        document.getElementsByClassName("result-text-y")[0].style.right =
+          "-30px";
+        document.getElementsByClassName("result-text-y")[0].style.top = "85px";
+      }
       break;
     case "2":
       x = inputs[0].value;
@@ -86,12 +154,34 @@ function handleClickCalBtn() {
       result = (x * y) / 100;
       content.getElementsByClassName("result-value")[0].innerText = result;
       document.getElementsByClassName("result-rect")[0].style.width =
-        (200 * 18) / 100 + "px";
+        (200 * x) / 100 + "px";
       document.getElementsByClassName("result-rect")[0].style.height = "200px";
+      if (result >= 8)
+        document
+          .getElementsByClassName("result-y-arrow")[0]
+          .classList.remove("d-none");
+      document.getElementsByClassName("result-text-x")[0].innerText = y;
+      document.getElementsByClassName("result-text-y")[0].innerText = result;
+      document
+        .getElementsByClassName("result-text-x")[0]
+        .classList.remove("d-none");
+      document
+        .getElementsByClassName("result-text-y")[0]
+        .classList.remove("d-none");
+      if (x > 10) {
+        document.getElementsByClassName("result-text-y")[0].style.right =
+          x - 10 + "px";
+        document.getElementsByClassName("result-text-y")[0].style.top = "70px";
+      } else {
+        document.getElementsByClassName("result-text-y")[0].style.right =
+          "-30px";
+        document.getElementsByClassName("result-text-y")[0].style.top = "85px";
+      }
       break;
     default:
       break;
   }
+  document.getElementsByClassName("result-rect")[0].classList.remove("d-none");
 }
 
 function handleClickBackBtn() {
